@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include"stack.h"
 
-void push(stack_ptr st,long num)
+void push(stack_ptr st,char num)
 {
     if (st->top == (STACK_SIZE - 1))
       {
@@ -15,9 +15,9 @@ void push(stack_ptr st,long num)
 
 }
 
-long pop(stack_ptr st)
+char pop(stack_ptr st)
 {
-    long num;
+    char num;
       if (st->top == - 1)
       {
             printf ("Stack is Empty\n");
@@ -42,7 +42,7 @@ void print(stack_ptr st)
     {
         printf("Stack is");
         for(i = 0;i <= st->top; ++i) {
-            printf("%ld ", st->stack[i]);
+            printf("%c ", st->stack[i]);
         }
     }
 }
