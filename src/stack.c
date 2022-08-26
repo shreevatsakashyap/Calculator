@@ -17,11 +17,10 @@ void push(stack_ptr st,char num)
 
 char pop(stack_ptr st)
 {
-    char num;
+      char num = '\0';;
       if (st->top == - 1)
       {
-            printf ("Stack is Empty\n");
-            return (st->top);
+            return num;
       }
       else
       {
@@ -36,11 +35,11 @@ void print(stack_ptr st)
     int i;
     if(st->top==-1)
     {
-        printf("Stack is empty!!");
+        printf("Stack is empty!!\n");
     }
     else
     {
-        printf("Stack is");
+        printf("Stack is\n");
         for(i = 0;i <= st->top; ++i) {
             printf("%c ", st->stack[i]);
         }

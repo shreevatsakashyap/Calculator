@@ -3,9 +3,9 @@
 #include "stack.h"
 #include<string.h>
 static int order(char ch);
-void input_to_postfix(char input[EXP_SIZE],char postfix[EXP_SIZE])
+int input_to_postfix(char input[EXP_SIZE],char postfix[EXP_SIZE])
 {
-    int i, p_index = 0;
+    int i, p_index = 0, error = 0;
     stack st;
     st.top = -1;
 
@@ -16,15 +16,19 @@ void input_to_postfix(char input[EXP_SIZE],char postfix[EXP_SIZE])
             postfix[p_index] = input[i];
             p_index++;
         }
-        else if( input[i] =='(' )
+        else if( input[i] ==')' )
         {
-            int y;
-            while( st.top ==')' )
+            int y=pop(&st);
+            while( y != '\0' && y != '(' )
             {
-                y = pop(&st);
                 postfix[p_index] = y;
                 p_index++;
+                y = pop(&st);
             }
+        }
+        else if(input[i] == '(')
+        {
+            push(&st, input[i]);
         }
         else
         {
@@ -40,18 +44,32 @@ void input_to_postfix(char input[EXP_SIZE],char postfix[EXP_SIZE])
                     push( &st , x);
                     push( &st , input[i]);
                 } else {
-                    char z = pop(&st);
-                    while(order(z) >= order(input[i]))
+                    while(x != '\0' && order(x) > order(input[i]))
                     {
-                        postfix[p_index] = z;
-                        z = pop(&st);
+                        postfix[p_index] = x;
+                        x = pop(&st);
                         p_index++;
                     }
+                    if(x != '\0')
+                        push(&st, x);
                     push( &st , input[i]);
                 }
             }
         }
     }
+    while (st.top != -1)
+    {
+        char p = pop(&st);
+        if(p == '(')
+        {
+           error++;
+        }
+        postfix[p_index] = p ;
+        p_index++;
+
+    }
+    postfix[p_index] = '\0';
+    return error;
 }
 
 static int order(char ch)
@@ -64,7 +82,7 @@ static int order(char ch)
     {
         return 2;
     }
-    else if(ch == '+')
+    else if(ch == '+' || ch == '-')
     {
         return 1;
     }
